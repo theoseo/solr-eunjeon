@@ -102,6 +102,7 @@ WORKDIR /opt/solr
 USER $SOLR_USER
 #RUN docker-entrypoint.sh
 
-
+#ENTRYPOINT ["solr"]
+#CMD ["start","-Djava.library.path=/usr/local/lib"]
 ENTRYPOINT ["docker-entrypoint.sh"]
-CMD ["bin/solr","start","-Djava.library.path=/usr/local/lib"]
+CMD ["solr-kr"]

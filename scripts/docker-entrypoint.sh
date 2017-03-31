@@ -10,7 +10,7 @@ fi
 
 # when invoked with e.g.: docker run solr -help
 if [ "${1:0:1}" = '-' ]; then
-    set -- solr-foreground "$@"
+     set -- solr-kr "$@"
 fi
 
 # execute command passed in as arguments.
