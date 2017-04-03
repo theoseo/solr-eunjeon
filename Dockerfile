@@ -51,8 +51,6 @@ RUN mkdir -p /opt/solr && \
   mkdir /docker-entrypoint-initdb.d /opt/docker-solr/
 
 
-
-
 RUN cd /tmp && \
     wget --quiet https://bitbucket.org/eunjeon/mecab-ko/downloads/mecab-0.996-ko-0.9.2.tar.gz && \
     tar zxfv mecab-0.996-ko-0.9.2.tar.gz && \
@@ -102,6 +100,8 @@ WORKDIR /opt/solr
 USER $SOLR_USER
 #RUN docker-entrypoint.sh
 
+COPY conf/* /opt/solr/server/solr/configsets/data_driven_schema_configs/conf/
+RUN chown -R $SOLR_USER:$SOLR_USER /opt/solr/server/solr/configsets/data_driven_schema_configs/conf
 #ENTRYPOINT ["solr"]
 #CMD ["start","-Djava.library.path=/usr/local/lib"]
 ENTRYPOINT ["docker-entrypoint.sh"]
