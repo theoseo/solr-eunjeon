@@ -68,6 +68,7 @@ RUN cd /tmp && \
     ./autogen.sh; \
     ./configure; make; make install; ldconfig
 
+
 USER $SOLR_USER
 RUN cd /tmp && \
     wget --quiet https://bitbucket.org/eunjeon/mecab-ko-lucene-analyzer/downloads/mecab-ko-lucene-analyzer-0.21.0.tar.gz && \
@@ -89,9 +90,16 @@ RUN cd /tmp/mecab-java-0.996 && \
 USER root
 RUN cp /tmp/mecab-java-0.996/libMeCab.so /usr/local/lib && \
     rm -rf $SERVER_DIR/mecab    
+COPY user-dic/* /tmp/mecab-ko-dic-2.0.1-20150920/user-dic/
+RUN cd /tmp/mecab-ko-dic-2.0.1-20150920 && \
+    ./tools/add-userdic.sh; make; make install
+    
 
 COPY scripts /opt/docker-solr/scripts
 RUN chown -R $SOLR_USER:$SOLR_USER /opt/docker-solr
+
+COPY conf/* /opt/solr/server/solr/configsets/data_driven_schema_configs/conf/
+RUN chown -R $SOLR_USER:$SOLR_USER /opt/solr/server/solr/configsets/data_driven_schema_configs/conf
 
 ENV PATH /opt/solr/bin:/opt/docker-solr/scripts:$PATH
 
@@ -100,8 +108,6 @@ WORKDIR /opt/solr
 USER $SOLR_USER
 #RUN docker-entrypoint.sh
 
-COPY conf/* /opt/solr/server/solr/configsets/data_driven_schema_configs/conf/
-RUN chown -R $SOLR_USER:$SOLR_USER /opt/solr/server/solr/configsets/data_driven_schema_configs/conf
 #ENTRYPOINT ["solr"]
 #CMD ["start","-Djava.library.path=/usr/local/lib"]
 ENTRYPOINT ["docker-entrypoint.sh"]
