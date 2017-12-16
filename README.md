@@ -7,3 +7,4 @@ without any special settings.
 1. git clone https://github.com/suhongs/solr-kr.git
 2. cd solr-kr
 3. docker build -t search .
+4. docker run -d -p 8983:8983  --name solr_server search:latest
