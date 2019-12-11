@@ -109,10 +109,11 @@ RUN cd /tmp/mecab-java-0.996 && \
     make && \
     cp /tmp/mecab-java-0.996/MeCab.jar /opt/solr/server/lib/ext
 
-RUN cd /tmp && \
+RUN cd /opt/solr/server/solr && \
     wget --quiet https://storage.googleapis.com/dbnews/dbnews.tar.gz && \
-    tar -xzvf dbnews.tar.gz /opt/solr/server/solr/dbnews && \
+    tar -xzvf dbnews.tar.gz && \ 
     rm -f dbnews.tar.gz
+RUN rm -f /opt/solr/server/solr/dbnews/data/index/write.lock
 
 USER root
 RUN cp /tmp/mecab-java-0.996/libMeCab.so /usr/local/lib && \
