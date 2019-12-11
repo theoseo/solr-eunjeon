@@ -109,6 +109,12 @@ RUN cd /tmp/mecab-java-0.996 && \
     make && \
     cp /tmp/mecab-java-0.996/MeCab.jar /opt/solr/server/lib/ext
 
+RUN cd /tmp && \
+    wget --quiet https://storage.googleapis.com/dbnews/dbnews.tar.gz && \
+    mv dbnews.tar.gz /opt/solr/server/solr/dbnews.tar.gz && \
+    tar -xzvf /opt/solr/server/solr/dbnews.tar.gz && \
+    rm -f /opt/solr/server/solr/dbnews.tar.gz
+
 USER root
 RUN cp /tmp/mecab-java-0.996/libMeCab.so /usr/local/lib && \
     rm -rf $SERVER_DIR/mecab    
@@ -128,6 +134,7 @@ ENV PATH /opt/solr/bin:/opt/docker-solr/scripts:$PATH
 EXPOSE 8983
 WORKDIR /opt/solr
 USER $SOLR_USER
+
 RUN docker-entrypoint.sh
 
 #ENTRYPOINT ["solr"]
