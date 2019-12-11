@@ -1,9 +1,10 @@
-FROM    openjdk:8-jdk
+FROM  openjdk:8-jdk
 MAINTAINER  Martijn Koster "mak-docker@greenhills.co.uk"
 
 # Override the solr download location with e.g.:
 #   docker build -t mine --build-arg SOLR_DOWNLOAD_SERVER=http://www-eu.apache.org/dist/lucene/solr .
-ARG SOLR_DOWNLOAD_SERVER
+ARG SOLR_DOWNLOAD_SERVER 
+ARG SOLR_VERSION="7.5.0"
 
 RUN apt-get update && \
   apt-get -y install lsof build-essential libmecab2 libmecab-dev && \
@@ -13,8 +14,8 @@ ENV SOLR_USER="solr" \
     SOLR_UID="8983" \
     SOLR_GROUP="solr" \
     SOLR_GID="8983" \
-    SOLR_VERSION="7.5.0" \
-    SOLR_URL="${SOLR_DOWNLOAD_SERVER:-https://archive.apache.org/dist/lucene/solr}/7.5.0/solr-7.5.0.tgz" \
+    #SOLR_VERSION="7.5.0" \
+    SOLR_URL="${SOLR_DOWNLOAD_SERVER:-https://archive.apache.org/dist/lucene/solr}/${SOLR_VERSION}/solr-${SOLR_VERSION}.tgz" \
     SOLR_SHA256="eac2daffc376dd8057ee831fbfc4a1b8ee236b8ad94122e11d67fd2b242acebc" \
     SOLR_KEYS="052C5B48A480B9CEA9E218A5F98C13CFA5A135D8" \
     PATH="/opt/solr/bin:/opt/docker-solr/scripts:$PATH"
@@ -127,9 +128,8 @@ ENV PATH /opt/solr/bin:/opt/docker-solr/scripts:$PATH
 EXPOSE 8983
 WORKDIR /opt/solr
 USER $SOLR_USER
-#RUN docker-entrypoint.sh
+RUN docker-entrypoint.sh
 
 #ENTRYPOINT ["solr"]
 #CMD ["start","-Djava.library.path=/usr/local/lib"]
-ENTRYPOINT ["docker-entrypoint.sh"]
 CMD ["solr-kr"]
