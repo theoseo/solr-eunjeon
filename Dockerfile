@@ -111,9 +111,8 @@ RUN cd /tmp/mecab-java-0.996 && \
 
 RUN cd /tmp && \
     wget --quiet https://storage.googleapis.com/dbnews/dbnews.tar.gz && \
-    mv dbnews.tar.gz /opt/solr/server/solr/dbnews.tar.gz && \
-    tar -xzvf /opt/solr/server/solr/dbnews.tar.gz && \
-    rm -f /opt/solr/server/solr/dbnews.tar.gz
+    tar -xzvf dbnews.tar.gz /opt/solr/server/solr/dbnews && \
+    rm -f dbnews.tar.gz
 
 USER root
 RUN cp /tmp/mecab-java-0.996/libMeCab.so /usr/local/lib && \
